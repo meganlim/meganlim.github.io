@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> OchemReax </title>
+    <link rel="stylesheet" type="text/css" href="main.css">.
+  </head>
+
+<!-- displays selfdesigned logo (links to online photo) -->
+  <body>
+    <div>
+      <img src="https://i.imgur.com/TZnpleL.png" alt="Ochem Reax Logo">
+    </div>
+
+<!-- subheader -->
+    <h2>Welcome to Visualizing Chemical Structure and Reactivity!</h2>
+
+<!-- creating button that displays problem solving paragraph -->
+    <button id= "tipsButton" class = "btn btn-success"> Tips/Problem Solving Technique </button>
+    <div id = "technique"> </div><br><br>
+
+<!-- creating left fieldset for selecting conditions -->
+   <fieldset style="width:250px" class= "left">
+     <legend>Select a Condition</legend>
+
+       <input type="checkbox" id="acidic">
+       <label for="acidic">Acidic Conditions</label>
+       <div id = "pos"></div>
+
+       <input type="checkbox" id="basic">
+       <label for="basic">Basic Conditions</label>
+       <div id = "neg"></div>
+   </fieldset>
+
+<!-- creating center input fieldset for user input for Reactants -->
+   <fieldset style="width:250px; height: 250px" class = "center">
+       <legend>Enter Reactants</legend>
+   </fieldset>
+
+<!-- creating right fieldset for solven input -->
+   <fieldset style="width:250px; height: 250px" class = "right">
+       <legend>Enter Solvent(s)</legend>
+   </fieldset>
+   <img src="https://i.imgur.com/ACOX67h.png" alt="Reaction Arrow">
+
+<!-- visualize reaction button (should open new html page) -->
+   <button id="visualizeButton" class="btn btn-success" style= "width: 220px; font-size:24px" >Visualize Reaction</button>
+   <div id= "start"> </div>
+
+
+
+    <script src ="code.js"></script>
+  </body>
+</html>
