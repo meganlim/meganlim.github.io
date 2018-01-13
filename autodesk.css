@@ -1,0 +1,19 @@
+.left{
+  margin-left: 100px;
+  float: left;
+  width: 30%;
+  padding-top: 30px;
+}
+.center{
+  margin-left: 75px;
+  float: inherit;
+  width: 20%;
+
+}
+
+.right{
+  margin-left: 75px;
+  float: inherit;
+  width: 30%;
+
+}
