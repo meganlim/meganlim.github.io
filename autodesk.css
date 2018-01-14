@@ -3,11 +3,14 @@
   float: left;
   width: 30%;
   padding-top: 30px;
+  padding-bottom: 30px;
 }
 .center{
   margin-left: 75px;
   float: inherit;
   width: 20%;
+  padding-bottom: 30px;
+
 
 }
 
@@ -15,5 +18,7 @@
   margin-left: 75px;
   float: inherit;
   width: 30%;
+  padding-bottom: 30px;
+
 
 }
