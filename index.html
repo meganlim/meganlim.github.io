@@ -88,30 +88,71 @@ body, html {
 <div class="w3-content w3-container w3-padding-64" id="about">
   <h3 class="w3-center">ABOUT ME</h3>
   <p class="w3-center"><em> Bioengineering Student at UC Berkeley</em></p>
-  <div class="w3-row">
-    <div class="w3-col m6 w3-center w3-padding-large">
-      <p><b><i class="fa fa-user w3-margin-right"></i>Megan Lim</b></p><br>
-      <img src="https://i.imgur.com/NJ8uxUZ.png" class="w3-round w3-image" alt="Photo of Me" width="200" height="300">
+
+    <div class="w3-row">
+      <div class="w3-third">
+        <img id="wheel1" src="https://i.imgur.com/I4rJMln.png" class="w3-round w3-image" alt="Photo of Me" width="200" height="300"><br>
+        <img id="wheel2" src="https://i.imgur.com/eDWVJCM.png" class="w3-round w3-image" alt="Photo of Me" width="150" height="200">
+      </div>
+
+      <div class="w3-third m6">
+        <p><b><i class="fa fa-user w3-margin-right"></i>Megan Lim</b></p><br>
+        <img src="https://i.imgur.com/NJ8uxUZ.png" class="w3-round w3-image" alt="Photo of Me" width="200" height="300">
+      </div>
+
+      <!-- Hide this text on small devices -->
+      <div class=" w3-third m6 w3-hide-small">
+        <p>Welcome to my website!  I am currently a sophomore at UC Berkeley where I study Bioengineering.
+           I am a writer for the Mission on Medium and a researcher at UCSF.
+           I love to run and play soccer on my free time.
+        </p><br>
+
+        <p>Favorite order at Philz:    Iced Ecstatic medium medium.</p>
+        <p>100m track PR:    12.6 sec </p>
+        <p>Most number of soccer juggles:    833 </p>
+        <p>Best thing I ever cooked:    crepes</p>
+        <p>Mission: To create meaningful content.    In all forms. </p>
+      </div>
     </div>
-
-
-    <!-- Hide this text on small devices -->
-    <div class="w3-col m6 w3-hide-small w3-padding-large">
-      <p>Welcome to my website!  I am currently a sophomore at UC Berkeley where I study Bioengineering.
-         I am a writer for the Mission on Medium and a researcher at UCSF.
-         I love to run and play soccer on my free time.
-      </p><br>
-
-      <p>Favorite order at Philz:    Iced Ecstatic medium medium.</p>
-      <p>100m track PR:    12.6 sec </p>
-      <p>Most number of soccer juggles:    833 </p>
-      <p>Best thing I ever cooked:    crepes</p>
-      <p>Mission: To create meaningful content.    In all forms. </p>
-    </div>
-
-  </div>
-
 </div>
+
+<!-- wheel animation -->
+<div class="w3-col m4 w3-container">
+  <script>
+  var looper;
+  var degrees = 0;
+  function rotate(el,speed){
+    var elem = document.getElementById(el);
+    elem.style.transform = "rotate("+degrees+"deg)";
+    looper = setTimeout('rotate(\''+el+'\','+speed+')',speed);
+    degrees++;
+    if(degrees>359){
+      degrees = 1;
+    }
+    document.getElementById("status").innerHTML = "rotate("+degrees+"deg)";
+  }
+  </script>
+  <script>rotate("wheel1",30);</script>
+</div>
+
+<div class="w3-col m4 w3-container">
+  <script>
+  var looper;
+  var degrees = 0;
+  function rotate(el,speed){
+    var elem = document.getElementById(el);
+    elem.style.transform = "rotate("+degrees+"deg)";
+    looper = setTimeout('rotate(\''+el+'\','+speed+')',speed);
+    degrees--;
+    if(degrees<-359){
+      degrees = -1;
+    }
+    document.getElementById("status").innerHTML = "rotate("+degrees+"deg)";
+  }
+  </script>
+  <script>rotate("wheel2",40);</script>
+</div>
+<!-- wheel animation ends -->
 
 <!-- bar across -->
 <div class="w3-row w3-center w3-dark-grey w3-padding-16">
@@ -240,26 +281,7 @@ body, html {
       </div>
     </div>
 
-    <!-- wheel animation -->
-    <div class="w3-col m4 w3-container">
-      <script>
-      var looper;
-      var degrees = 0;
-      function rotate(el,speed){
-        var elem = document.getElementById(el);
-        elem.style.transform = "rotate("+degrees+"deg)";
-        looper = setTimeout('rotate(\''+el+'\','+speed+')',speed);
-        degrees++;
-        if(degrees>359){
-          degrees = 1;
-        }
-        document.getElementById("status").innerHTML = "rotate("+degrees+"deg)";
-      }
-      </script>
-      <img id="selfie1" src="https://i.imgur.com/yFrBd6L.png" class="w3-round w3-image" alt="Photo of Me" width="200" height="300">
-      <script>rotate("selfie1",30);</script>
-    </div>
-    <!-- wheel animation ends -->
+
 
   </div>
 
