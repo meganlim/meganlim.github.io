@@ -1,0 +1,214 @@
+<html>
+  <head>
+    <title>Kalman PK</title>
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous"> -->
+    <link rel="stylesheet" type="text/css" href="pkscorer.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <script src = "https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.2.1/math.js" type="text/javascript"></script>
+  </head>
+
+  <body>
+    <h1>The Kalman Kick</h1>
+
+    <div class = "inputAnimation">
+      <!-- used to calculate performance factor- uncertainty in the gaussian distribution -->
+      The Player:<br>
+      Player Level: <input type="text" id="experience" placeholder = "From 0-10"><br>
+      Player Fatigue: <input type="text" id="fatigue" placeholder = "From 0-10"><br>
+      State of Game: <input type="text" id="gamestate" placeholder = "W, L, T"><br>
+      Right or Left Footed: <input type="text" id="foot" placeholder = "Left or Right"><br><br>
+
+      The Kick:<br>
+      Part of Foot: <input type="text" id="footpart" placeholder = "Inside or Laces"><br>
+      <!-- determines power (initial velocity) -->
+      Angle of foot contact with ball: <input type="text" id="contactangle" placeholder = "0-90 degrees"><br>
+      <!-- determines theta -->
+      Part of ball contacted: <input type="text" id="ballcontact" placeholder = "Top, Middle, Bottom"><br><br>
+      <!-- determines alpha angle (how much ball is lifted off the ground) -->
+
+      <button id = "kick">Kick!</button>
+      <div class="box">
+        <label style = "text-decoration:None">Discrete Time Step (k): </label>
+        <div class = "counter" id="curr">0</div>
+      </div><br><br>
+    </div>
+
+    <canvas id="myCanvas" width="480" height="555" style="border:1px solid #000000;"></canvas>
+
+
+    <div class = "outputAnimation">
+      <div id = "predictMean"></div>
+      <div id = "predictCovMatrix"></div><br>
+      <div id = "transPredictMean"></div>
+      <div id = "transPredictCov"></div><br>
+      <div id = "kalmanGain"></div><br>
+      <div id = "updatedMean"></div>
+      <div id = "updatedCovMatrix"></div>
+    </div>
+
+
+
+
+    <script type="text/javascript">
+
+     //begin animation
+      var canvas = document.getElementById("myCanvas");
+      var ctx = canvas.getContext("2d");
+      // rectangle/goal
+      ctx.rect(72,35,336,112);
+      ctx.stroke();
+
+      // circle/soccer ball
+      ctx.beginPath();
+      ctx.arc(240, 539, 10.4, 0, Math.PI*2);
+      ctx.fillStyle = "#0095DD";
+      ctx.fill();
+      ctx.closePath();
+
+      var a = 240;
+      var b = 539;
+      var foot = document.getElementById("foot").value;
+      //end animation
+
+      //Kalman filter soccer calculation
+      var kStep = 0;
+      var initialize = 0; //to ensure setting initial values only once
+      var x;
+      var P;
+      var C = math.matrix([[13.03, 8.29, 42.65,0],[8.29, 5.27, 27.13, 0],[42.65, 27.13, 139.59, 0],[0,0,0,0]]);//covariance matrix(predetermined, see excel spreadsheet)
+      var u = `${-32.2}`; //gravity bc problem with multiplying vector times scalar
+      var B = math.matrix([0, 0.00125, 0, 0.05]); //control matrix
+      var S = math.matrix([[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]); //identity matrix bc units already same as sensors
+      var N = math.matrix([[0.001, 0,0,0],[0,0.001,0,0],[0,0,0.001,0],[0,0,0,0.001]]); //noise of sensors
+      var Q;
+      var r = math.matrix([0,0,0,98.6]);//initial sensor vector
+      //Kalman filter soccer calculation
+
+      kick.addEventListener('click', function(e) {
+
+        if (initialize == 0){
+          var level = JSON.parse(document.getElementById("experience").value);
+          var fatigue = JSON.parse(document.getElementById("fatigue").value);
+          var state = document.getElementById("gamestate").value;
+
+          var footpart = document.getElementById("footpart").value;
+          var theta = JSON.parse(document.getElementById("contactangle").value);
+          var ballcontact = document.getElementById("ballcontact").value;
+
+          if (footpart == "Laces") //calculates velocity of ball after kick
+          {
+            x = math.matrix([0,0,0, Math.random() * (117.3 - 102.6) + 102.6]);
+          }
+          else{//kick is inside of foot --> weaker kick
+            x = math.matrix([0,0,0, Math.random() * (102.6 - 58.6) + 58.6]);
+          }
+
+          //find prediction matrix
+          if(ballcontact == "Top"){alpha = Math.random() * (30 - 0) + 30}
+          if(ballcontact == "Middle"){alpha = Math.random() * (60 - 30) + 30}
+          if(ballcontact == "Bottom"){alpha = Math.random() * (90 - 45) + 45}
+
+          var vx = .05 * Math.cos(alpha * Math.PI / 180) * Math.sin(theta * Math.PI / 180);
+          var vy = .05 * Math.sin(alpha * Math.PI / 180);
+          var vz = .05 * Math.cos(alpha * Math.PI / 180) * Math.cos(theta * Math.PI / 180);
+          P = math.matrix([[1, 0, 0, vx],[0,1,0,vy],[0,0,1,vz],[0,0,0,1]]);
+
+          //find uncertainty matrix based on kicker talent/experience/stress factor
+          if (state == "W"){ state = 8}
+          if (state == "T"){ state = 5}
+          if (state == "L"){ state = 3}
+
+          var performance = (level + (10-fatigue) + state)/3;
+          var pfactor = 1/15/performance;
+          Q = math.matrix([[pfactor, 0,0,0],[0,pfactor,0,0],[0,0,pfactor,0],[0,0,0,pfactor]]);
+
+          initialize++;
+        }
+
+
+        if (x.get([2]) < 36){
+
+        var predictMean = math.add(math.multiply(P, x), math.multiply(B, u));
+        var predictCov = math.add(math.multiply(P, math.multiply(C, math.transpose(P))), Q);
+
+        var transPredictMean = math.multiply(S, math.add(math.multiply(P, x), math.multiply(B, u)));
+        var transPredictCov = math.multiply(S, math.multiply(math.add(math.multiply(P, math.multiply(C, math.transpose(P))), Q), math.transpose(S)));
+
+        var kalmanGain = math.multiply(transPredictCov, math.inv(math.add(transPredictCov, N)));
+
+        var kalmanGainPrime = math.multiply(math.inv(S), kalmanGain);
+        var meanInside = math.subtract(math.multiply(kalmanGainPrime, r), math.multiply(kalmanGainPrime, math.multiply(S, x)));
+        var updatedMean = math.add(x, meanInside);
+        var updatedCovMatrix = math.subtract(C, math.multiply(kalmanGainPrime, math.multiply(S, C)));
+
+        document.getElementById("predictMean").innerHTML = "Mean Vector Prediction: " + predictMean;
+        document.getElementById("predictCovMatrix").innerHTML = "Covariance Matrix Prediction: " + predictCov;
+
+        // document.getElementById("transPredictMean").innerHTML = "Transformed Mean Vector Prediction: " + transPredictMean;
+        // document.getElementById("transPredictCov").innerHTML = "Transformed Covariance Matrix Prediction: " + transPredictCov;
+
+        document.getElementById("kalmanGain").innerHTML = "Kalman Gain: " + kalmanGain;
+
+        document.getElementById("updatedMean").innerHTML = "Updated Mean Vector: " + updatedMean;
+        document.getElementById("updatedCovMatrix").innerHTML = "Updated Covariance Matrix: " + updatedCovMatrix;
+
+        //set new value of mean and covmatrix for recursive input
+        x = updatedMean;
+        C = updatedCovMatrix;
+
+        var sensorData = [[0,0,0,98.6],[1.2, .68, 3.9,102.6],[2.7, 1.2, 8.2, 102.6],[3.9, 2.6, 10.2, 102.6],[4.9, 3.2, 17.1,102.6],[6.3,
+          4.1, 23.1, 102.6],[7.9, 5.3, 27.6,102.6], [9.36, 6.6, 31.4,102.6],[11.1, 6.9, 37.3,102.6]];
+        //sensor data that will be stepped through
+
+        kStep++;
+        document.getElementById('curr').textContent = kStep;
+
+        r = math.matrix(sensorData[kStep]); //step through sensor data matrix
+        }
+
+
+        draw()
+      })
+
+
+      //for animation
+      function draw() {
+        // ctx.clearRect(0, 0, canvas.width, canvas.height);     THIS REMOVES THE SHADOW OF THE BALL
+        ctx.rect(72,35,336,112);
+        ctx.stroke();
+        drawBall();
+        if (foot == "Left"){//left footed, ball curves to right
+          a = 240 + x.get([0])*14;
+        }
+        else{//right footed, ball moves to the left
+          a = 240 - x.get([0])*14;
+        }
+
+        if (x.get([2])<36){ //not reached goal yet
+          b = 539 - x.get([2])*14;
+        }
+        else { //reached goal so now find height off ground to display on goal
+          b = 147 - x.get([2])*14;
+        }
+      }
+
+      function drawBall(){
+        ctx.beginPath();
+        ctx.arc(a, b, 10, 0, Math.PI*2);
+        ctx.fillStyle = "#0095DD";
+        ctx.fill();
+        ctx.closePath();
+
+      }
+
+
+
+
+    </script>
+
+
+
+
+
+  </body>
+</html>
