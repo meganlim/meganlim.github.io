@@ -1,0 +1,81 @@
+<html>
+<head>
+  <title>Prognostics </title>
+  <link rel="stylesheet" type="text/css" href="nasa.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+</head>
+
+<body>
+  <h3 style = "padding-top:30px; padding-bottom:20px">Prognostics</h3>
+  <div>
+    Framework: Model-based v. Data-driven<br><br>
+    Goal: find End of Life (EoL- a time index)<br><br>
+    Next: find probability of EoL<br><br>
+    System: discrete time variables, partition into failure and nonfailure states<br><br>
+    At each time step, k, state and trajectories are updated.<br><br>
+    Application: Rover Mission Replanning- an autonomous decision-making system diagnoses and utilizes prognosis to make
+    optimal decisions in order to prevent reaching EoL<br><br>
+    Idea: utilize probability distributions around point estimates of predicted future states aka future state trajectories<br><br>
+    Prediction: "computing dependent quantities, given independent quantities"<br>
+    Estimation: "computing independent quantities, given dependent quantities"<br>
+    Prognostics: perform estimation before prediction<br>
+    Mathematical Notes (before diving into concepts):<br>
+    Vectors and matrices are useful for holding information about a system in a compact way. These representations make it easier for math to be performed on the data.
+    Uncertainty is encapsulated by distributions or ranges around point estimates. All systems of equations and models of systems are inherently matrices.<br>
+    Purpose of these Filters: optimal way to gather all available data(predicted and observed) to make a best guess about the state of the system<br>
+    Follows Bayes Theorem which is based on subjective probability (degree of belief to which statement is supported by existing knowledge and available data)<br>
+    Process: recursive<br><br><br>
+
+    <h3>Kalman Filter</h3>
+    System: linear and dynamic with uncertainty<br>
+
+    Variables: Gaussian distributed, used to characterize the system (eg: position, velocity)<br>
+    Covariance matrix: describes correlation between the variables<br>
+    Mean vector: best estimate of variables<br>
+    Model: utilize a model to form a prediction matrix that transforms previous prediction into next prediction (eg: kinematics(constant acceleration))<br>
+    <ul><li>by the prediction matrix acting on the mean vector, it transforms and updates the mean vector to a new state</li>
+    <li>may not always be competely accurate(but no models are)</li></ul>
+    Update Covariance Matrix: utilize matrix identity<br>
+    Accounting for External Influence: contain information within another vector and matrix and add to current prediction to "correct" it<br>
+    Accounting for External Uncertainty: produces a range of states, a new distribution with same mean but an added on covariance matrix<br>
+    <ul><li>mathematical note: everytime you are adding a matrix(to correct), you are expanding the vector space spanned</li></ul>
+    Now bringing in sensor data...<br>
+    Another matrix is needed to adjust sensor data to same scale and units of observed system.<br>
+    Accounting for Uncertainty(Noise) of Sensor Data: utse a covariance matrix<br>
+    Summary of Current Data: 2 gaussian distributions
+    <ul><li>newest transformed prediction</li>
+      <li>adjusted sensor data</li>
+      <li>note: each contain their own mean vector and covariant matrix of relevant data</li></ul>
+    Next Goal: reconcile what we predict and what we have observed<br>
+    In order to find the overlap of these two distributions(get the bestest guess): we multiply them to get a new distribution<br><br><br>
+
+
+    <h3>Extended Kalman Filter (EKF)</h3>
+    System: non-linear<br>
+    Goal: using a linear approximation of a non-linear system, still utilizes mean vector and covariance matrix<br>
+    Solution to the Non-linearity: treat in same manner as Calculus(differentiality), model a curve with infinitesimal line segments<br>
+    Accuracy: to the 1st order (Taylor series expansion)<br>
+    Prediction step: represent using nonlinear functions<br>
+    New Matrices: Jacobians of nonlinear functions (matrix of partial derivatives)<br>
+    Flaws: Kalman gain not as optimal as Kalman Filter because approximation of nonlinearity using Jacobians, first order linearization introduces large errors in mean and covariance<br><br><br>
+
+
+    <h3>Unscented Kalman Filter</h3>
+    System: non-linear<br>
+    Motivation: improvement over EKF when system is highly non-linear, it is easier to approximate a distribution than a non-linear function<br>
+    Differences: approximates state distribution rather than non-linearity, maintains non-linear functions without using Jacobians<br>
+    Process: deterministic sampling, set of chosen points (sigma points) captures true mean and covariance<br>
+    Accuracy: to the 3rd order (Taylor series expansion)<br>
+    Method: Unscented Transformation (UT)- finding statistics of a variable undergoing nonlinear transformation, use sigma points (vectors) with corresponding weights<br><br><br>
+
+    <h3>Particle Filter (Monte Carlo sampling)</h3>
+    System: non-linear<br>
+    Accuracy: increases with number of particles<br>
+    Method: distribution approximated by particles (discrete weighted samples)<br><br><br>
+
+    <h3>Latin hypercube sampling: no longer being pursued</h3><br><br><br>
+
+
+</div>
+</body>
+</html>
