@@ -26,10 +26,6 @@
       Part of ball contacted: <input type="text" id="ballcontact" placeholder = "Top, Middle, Bottom"><br><br>
       <!-- determines alpha angle (how much ball is lifted off the ground) -->
 
-      The Goalie:<br>
-      Goalie Level: <input type="text" id="goalielevel" placeholder = "From 0-10"><br>
-      Goalie Height: <input type="text" id="goalieheight" placeholder = "height (ft)"><br><br>
-
       <button id = "kick">Kick!</button>
       <div class="box">
         <label style = "text-decoration:None">Discrete Time Step (k): </label>
@@ -67,30 +63,11 @@
       ctx.arc(240, 539, 10.4, 0, Math.PI*2);
       ctx.fillStyle = "#0095DD";
       ctx.fill();
-      // ctx.closePath();
+      ctx.closePath();
 
-      // image of goalie in center of goal
-      goalie_image = new Image();
-      goalie_image.src = "https://i.imgur.com/W0Ls7qk.png";
-      goalie_image.onload = function(){
-        ctx.drawImage(goalie_image, 208, 77, 50, 70);}
-
-      //movement of ball position
       var a = 240;
       var b = 539;
-      var foot = document.getElementById("foot");
-
-      // //movement of goalie area position
-      // var a1 = 72 + goalieheight*14*1.25/2; //half of shoulder and 1.25 arm's reach
-      // var b1 = 147 - goalieheight*14; //x,y of goalie rectangle area coverage  (upper left corner of rectangle)
-      var a1;
-      var b1;
-      var a1pace;
-      var b1pace;
-
-      var goalieguess = Math.random();
-      var goalieheight;
-
+      var foot = document.getElementById("foot").value;
       //end animation
 
       //Kalman filter soccer calculation
@@ -105,39 +82,20 @@
       var N = math.matrix([[0.001, 0,0,0],[0,0.001,0,0],[0,0,0.001,0],[0,0,0,0.001]]); //noise of sensors
       var Q;
       var r = math.matrix([0,0,0,98.6]);//initial sensor vector
-
-      var state = document.getElementById("gamestate");
-      var footpart = document.getElementById("footpart");
-      var ballcontact = document.getElementById("ballcontact");
-
-
-
       //Kalman filter soccer calculation
-
 
       kick.addEventListener('click', function(e) {
 
         if (initialize == 0){
           var level = JSON.parse(document.getElementById("experience").value);
           var fatigue = JSON.parse(document.getElementById("fatigue").value);
+          var state = document.getElementById("gamestate").value;
 
+          var footpart = document.getElementById("footpart").value;
           var theta = JSON.parse(document.getElementById("contactangle").value);
+          var ballcontact = document.getElementById("ballcontact").value;
 
-          goalieheight = JSON.parse(document.getElementById("goalieheight").value);
-          //movement of goalie area position
-          a1 = 72 + goalieheight*14*1.25; //half of shoulder and 1.25 arm's reach
-          b1 = 147 - goalieheight*14; //x,y of goalie rectangle area coverage  (upper left corner of rectangle)
-
-          var goalielevel = JSON.parse(document.getElementById("goalielevel").value);
-          if (goalielevel < 5) {
-            a1pace = Math.random() * (203 - 169.4) + 169.4;
-          }
-          else {
-            a1pace = Math.random() * (274.4 - 203) + 203;
-          }
-          b1pace = 42.85;
-
-          if (footpart.value == "Laces") //calculates velocity of ball after kick
+          if (footpart == "Laces") //calculates velocity of ball after kick
           {
             x = math.matrix([0,0,0, Math.random() * (117.3 - 102.6) + 102.6]);
           }
@@ -146,9 +104,9 @@
           }
 
           //find prediction matrix
-          if(ballcontact.value == "Top"){alpha = Math.random() * (30 - 0) + 30}
-          if(ballcontact.value == "Middle"){alpha = Math.random() * (60 - 30) + 30}
-          if(ballcontact.value == "Bottom"){alpha = Math.random() * (90 - 45) + 45}
+          if(ballcontact == "Top"){alpha = Math.random() * (30 - 0) + 30}
+          if(ballcontact == "Middle"){alpha = Math.random() * (60 - 30) + 30}
+          if(ballcontact == "Bottom"){alpha = Math.random() * (90 - 45) + 45}
 
           var vx = .05 * Math.cos(alpha * Math.PI / 180) * Math.sin(theta * Math.PI / 180);
           var vy = .05 * Math.sin(alpha * Math.PI / 180);
@@ -156,14 +114,13 @@
           P = math.matrix([[1, 0, 0, vx],[0,1,0,vy],[0,0,1,vz],[0,0,0,1]]);
 
           //find uncertainty matrix based on kicker talent/experience/stress factor
-          if (state.value == "W"){ state = 8}
-          if (state.value == "T"){ state = 5}
-          if (state.value == "L"){ state = 2}
+          if (state == "W"){ state = 8}
+          if (state == "T"){ state = 5}
+          if (state == "L"){ state = 3}
 
           var performance = (level + (10-fatigue) + state)/3;
-          var pfactor = 1/performance;
+          var pfactor = 1/15/performance;
           Q = math.matrix([[pfactor, 0,0,0],[0,pfactor,0,0],[0,0,pfactor,0],[0,0,0,pfactor]]);
-
 
           initialize++;
         }
@@ -211,24 +168,19 @@
 
 
         draw()
-
       })
 
 
       //for animation
       function draw() {
-        // ctx.clearRect(0, 0, canvas.width, canvas.height);     //THIS REMOVES THE SHADOW OF THE BALL
+        // ctx.clearRect(0, 0, canvas.width, canvas.height);     THIS REMOVES THE SHADOW OF THE BALL
         ctx.rect(72,35,336,112);
         ctx.stroke();
-        ctx.closePath();
-
         drawBall();
-        drawGoalieArea();
-
-        if (foot.value == "Left"){//left footed, ball curves to right
+        if (foot == "Left"){//left footed, ball curves to right
           a = 240 + x.get([0])*14;
         }
-        else {//right footed, ball moves to the left
+        else{//right footed, ball moves to the left
           a = 240 - x.get([0])*14;
         }
 
@@ -238,17 +190,6 @@
         else { //reached goal so now find height off ground to display on goal
           b = 147 - x.get([2])*14;
         }
-
-
-        //goalie movement
-        if (goalieguess < .5){
-          a1 = a1 + a1pace*.05*kStep;
-        }
-        else {
-          a1 = a1 - a1pace*.05*kStep;
-        }
-        b1 = b1 - b1pace*.05*kStep;
-
       }
 
       function drawBall(){
@@ -257,25 +198,16 @@
         ctx.fillStyle = "#0095DD";
         ctx.fill();
         ctx.closePath();
+
       }
 
-      function drawGoalieArea(){
-        ctx.beginPath();
-        ctx.rect(a1, b1, goalieheight*1.25*14, goalieheight*14);
-        if (goalieguess < .5){
-          var grd = ctx.createRadialGradient(a1+goalieheight*1.25*14, b1+goalieheight*14/2, 3, a1+goalieheight*1.25*14/2, b1+goalieheight*14/2, goalieheight*1.25*14);
-          }
-        else{
-          var grd = ctx.createRadialGradient(a1, b1+goalieheight*14/2, 3, a1+goalieheight*1.25*14/2, b1+goalieheight*14/2, goalieheight*1.25*14);
-        }
-        grd.addColorStop(0,"coral");
-        grd.addColorStop(1,"white");
-        ctx.fillStyle = grd;
-        ctx.fill();
-        ctx.closePath();
-      }
+
+
 
     </script>
+
+
+
 
 
   </body>
