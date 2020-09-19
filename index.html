@@ -3,39 +3,89 @@
      <title>Megan Lim </title>
      <link rel="stylesheet" type="text/css" href="newsite.css">
      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-     <div class = "first">
-       <h1> <span class="purpleText">Megan</span> Amber</h1>
-     </div>
-
-     <div class = "second">
-       <h1> Manalastas <span class="purpleText">Lim</span> </h1>
-     </div>
    </head>
 
    <body>
-
-     <div style="background-color:#f2f3f4;">
      <fieldset class= "left">
-       Heyyo, I study BioEngineering at UC Berkeley and am currently at Genentech, SSF, in Pharmaceutical Technical Operations. My interests are computational organic chemistry and drug delivery. In my free time, I grade
-        problems for Art of Problem Solving's World Chemistry Olympiad training, play soccer, and write on Medium. You can find me spending roughly 19% of my day on public transit, brainstorming comedic content for my budding Youtube channel.<br><br>
-       <a href = "compresearch.html"> Computational Organic Chemistry Research<br> </a>
-       <a href = "genedit.html"> GenEdit Research Internship, 2019 <br> </a>
-       <a href = "nasa.html"> NASA Internship, Summer 2018<br> </a>
-       <a href = "medium.html"> Medium writing <br> </a>
-       <a href = "courses.html"> Courses and Teaching <br> </a>
-       <a href = "ucsf.html"> UCSF undergrad research, 2017 2018 <br> </a>
-       <a href = "swe.html">Society of Women Engineers(SWE) Outreach<br></a>
-       <a href = "books.html">Published books on Amazon <br></a>
-       <a href = "pkanimate.html">The Kalman Kick <br></a>
-       <a href = "youtube.html">YouTube<br></a>
-       <a href = "resume.pdf">Resume<br></a>
-       <!-- <a href = "soccer.html">Soccer<br></a> -->
+         <h2> <span class="purpleText">Megan</span> Amber</h2>
+
+       <div class = "second">
+         <h2> Manalastas <span class="purpleText">Lim</span> </h2>
+       </div>
+       <a href="#" onclick='About()'> About<br> </a>
+       <a href="#" onclick='Internships()'> Internships<br> </a>
+       <a href="#" onclick='Medium()'> Medium writing <br> </a>
+       <a href="#" onclick='Youtube()'> Youtube<br> </a>
+       <a href="#" onclick='Courses()'> Courses and Teaching <br> </a>
+       <a href="#" onclick='myFunction()'> Outreach <br> </a>
+       <a href="#" onclick='myFunction()'>Published books on Amazon <br></a>
+       <a href="#" onclick='myFunction()'>The Kalman Kick <br></a>
+       <a href="#" onclick='myFunction()'>Questions <br></a>
+       <a href="#" onclick='myFunction()'> Resume <br> </a>
+
      </fieldset>
 
-     <fieldset class= "rightfront">
-       <img src="profile.jpg" alt="stereoisomer">
-      </fieldset>
-    </div>
+     <fieldset class= "text_appear">
+       <img id="profilepic" src="profile.jpg" style="display:none;"></img><br>
+       <div id="info"></div><br>
+       <div id="info2"></div><br>
+       <div id="info3"></div><br>
+       <div id="info4"></div><br>
+       <div id="info5"></div><br>
+     </fieldset>
+
+
+
+
+     <script>
+           function About() {
+             document.getElementById('profilepic').style.display='block';
+             document.getElementById('profilepic').style.width='40%';
+             document.getElementById("info").innerHTML = "Oh look, above is a photo of me. I live in Berkeley, CA and currently work at Merck Research Labs, Computational Chemistry in SSF. I grew up in southern CA and study Bioengineering at UC Berkeley.";
+             document.getElementById("info2").innerHTML = "In my free time, I love to make comedic Youtube videos, write on Medium, and play soccer."
+             document.getElementById("info5").innerHTML = "contact me: meganlim@berkeley.edu | preferred subject line: ''I'm a big fan of your youtube channel''";
+             document.getElementById("info4").innerHTML = "currently listening to: You've Got Your Whole Life Ahead of You Baby by IDER";
+             document.getElementById("info3").innerHTML = 'mission: create meaningful content';
+           }
+
+           function Internships() {
+             document.getElementById('profilepic').style.display='none';
+             document.getElementById("info").innerHTML = "During my undergrad, I have interned at NASA, Genentech, and Merck Research Labs and conducted research in Prof. Houk's research lab.";
+             document.getElementById("info2").innerHTML = "Merck Research Labs | Computational & Structural Chemistry Intern 2020 | Quantum Mechanics & Deep Learning";
+             document.getElementById("info3").innerHTML = "Genentech | Pharmaceutical Technical Development Intern 2019 | Drug Development Automation";
+             document.getElementById("info4").innerHTML = "Prof. Houk's Research Lab | Ugrad Researcher | Computational Organic Chemistry"
+             document.getElementById("info5").innerHTML = "NASA Ames Research Center | Tech Intern 2018 | Diagnostics & Prognostics Research Group Algorithms";
+           }
+
+           function Medium(){
+             document.getElementById('profilepic').style.display='none';
+             document.getElementById("info").innerHTML = "I started out writing on Medium before my freshman year of college as an independent writer. I now write for 3 of Medium's top publications: The Mission, The Startup, The Writing Cooperative.";
+             document.getElementById("info2").innerHTML = "My more popular article topics: Kalman Filter algorithm, education, chaos.";
+             document.getElementById("info3").innerHTML = "Here is a link to my " + '<a href="https://medium.com/@megamberlim">Medium</a>';
+             document.getElementById("info4").innerHTML = "";
+             document.getElementById("info5").innerHTML = ""
+           }
+
+           function Youtube(){
+             document.getElementById('profilepic').style.display='none';
+             document.getElementById("info").innerHTML = "''Welcome back to my channel'' is probably my most used phrase in 2020.";
+             document.getElementById("info2").innerHTML = "I make videos on whatever I feel like at the moment.";
+             document.getElementById("info3").innerHTML = "Here is a link to my " + '<a href="https://www.youtube.com/channel/UCg3sciTolrvHUm3bikzIdpQ">channel.</a>';
+             document.getElementById("info5").innerHTML = "ps: If you can, please try to refrain from watching any video released in 2019 as my editing skills were not as developed then.";
+             document.getElementById("info4").innerHTML = "Like. Comment. Sub."
+           }
+
+           function Courses(){
+             document.getElementById('profilepic').style.display='none';
+             document.getElementById("info").innerHTML = "I study Bionengineering at UC Berkeley, but for some reason I find myself in many non-Bioengineering Classes. #spreadurwings";
+             document.getElementById("info2").innerHTML = "classes";
+             document.getElementById("info3").innerHTML = "";
+             document.getElementById("info4").innerHTML = "I currently TA/grade for Art of Problem Solving's ChemWOOT(world online olympiad training) to prepare hs students for ICHO & USACO.";
+             document.getElementById("info5").innerHTML = ""
+           }
+
+
+     </script>
 
    </body>
 
