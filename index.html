@@ -17,11 +17,11 @@
        <a href="#" onclick='Medium()'> Medium writing <br> </a>
        <a href="#" onclick='Youtube()'> Youtube<br> </a>
        <a href="#" onclick='Courses()'> Courses and Teaching <br> </a>
-       <a href="#" onclick='myFunction()'> Outreach <br> </a>
-       <a href="#" onclick='myFunction()'>Published books on Amazon <br></a>
-       <a href="#" onclick='myFunction()'>The Kalman Kick <br></a>
-       <a href="#" onclick='myFunction()'>Questions <br></a>
-       <a href="#" onclick='myFunction()'> Resume <br> </a>
+       <a href="#" onclick='Outreach()'> Outreach <br> </a>
+       <a href="#" onclick='Books()'>Published books on Amazon <br></a>
+       <a href="#" onclick='Kalman()'>The Kalman Kick <br></a>
+       <a href="#" onclick='Questions()'>Questions <br></a>
+       <a href="resume.pdf"> Resume <br> </a>
 
      </fieldset>
 
@@ -42,10 +42,10 @@
              document.getElementById('profilepic').style.display='block';
              document.getElementById('profilepic').style.width='40%';
              document.getElementById("info").innerHTML = "Oh look, above is a photo of me. I live in Berkeley, CA and currently work at Merck Research Labs, Computational Chemistry in SSF. I grew up in southern CA and study Bioengineering at UC Berkeley.";
-             document.getElementById("info2").innerHTML = "In my free time, I love to make comedic Youtube videos, write on Medium, and play soccer."
-             document.getElementById("info5").innerHTML = "contact me: meganlim@berkeley.edu | preferred subject line: ''I'm a big fan of your youtube channel''";
-             document.getElementById("info4").innerHTML = "currently listening to: You've Got Your Whole Life Ahead of You Baby by IDER";
-             document.getElementById("info3").innerHTML = 'mission: create meaningful content';
+             document.getElementById("info2").innerHTML = "I find machine learning, especially with scientific or quantum mechanic application, very exciting. I hope to build and create meaningful content. In my free time, I love to make comedic Youtube videos, write on Medium, and play soccer."
+             document.getElementById("info4").innerHTML = "contact me: meganlim@berkeley.edu | preferred subject line: ''I'm a big fan of your youtube channel''";
+             document.getElementById("info3").innerHTML = "currently listening to: You've Got Your Whole Life Ahead of You Baby by IDER";
+             document.getElementById("info5").innerHTML = '';
            }
 
            function Internships() {
@@ -53,7 +53,7 @@
              document.getElementById("info").innerHTML = "During my undergrad, I have interned at NASA, Genentech, and Merck Research Labs and conducted research in Prof. Houk's research lab.";
              document.getElementById("info2").innerHTML = "Merck Research Labs | Computational & Structural Chemistry Intern 2020 | Quantum Mechanics & Deep Learning";
              document.getElementById("info3").innerHTML = "Genentech | Pharmaceutical Technical Development Intern 2019 | Drug Development Automation";
-             document.getElementById("info4").innerHTML = "Prof. Houk's Research Lab | Ugrad Researcher | Computational Organic Chemistry"
+             document.getElementById("info4").innerHTML = '<a href="https://www.chem.ucla.edu/houk/">Prof. Houk research lab</a>' + " | Ugrad Researcher 2019 | Computational Organic Chemistry";
              document.getElementById("info5").innerHTML = "NASA Ames Research Center | Tech Intern 2018 | Diagnostics & Prognostics Research Group Algorithms";
            }
 
@@ -63,7 +63,7 @@
              document.getElementById("info2").innerHTML = "My more popular article topics: Kalman Filter algorithm, education, chaos.";
              document.getElementById("info3").innerHTML = "Here is a link to my " + '<a href="https://medium.com/@megamberlim">Medium</a>';
              document.getElementById("info4").innerHTML = "";
-             document.getElementById("info5").innerHTML = ""
+             document.getElementById("info5").innerHTML = "";
            }
 
            function Youtube(){
@@ -72,16 +72,52 @@
              document.getElementById("info2").innerHTML = "I make videos on whatever I feel like at the moment.";
              document.getElementById("info3").innerHTML = "Here is a link to my " + '<a href="https://www.youtube.com/channel/UCg3sciTolrvHUm3bikzIdpQ">channel.</a>';
              document.getElementById("info5").innerHTML = "ps: If you can, please try to refrain from watching any video released in 2019 as my editing skills were not as developed then.";
-             document.getElementById("info4").innerHTML = "Like. Comment. Sub."
+             document.getElementById("info4").innerHTML = "Like. Comment. Sub.";
            }
 
            function Courses(){
              document.getElementById('profilepic').style.display='none';
              document.getElementById("info").innerHTML = "I study Bionengineering at UC Berkeley, but for some reason I find myself in many non-Bioengineering Classes. #spreadurwings";
-             document.getElementById("info2").innerHTML = "classes";
+             document.getElementById("info2").innerHTML = "some favorite coursework: Organic Chemistry. Quantum Mechanics. CS Programs. Linear Algebra. BioNanoscience. Chemical Biology. Material Science. Drug Delivery. Machine Learning for Chemistry. Computational Biology.";
              document.getElementById("info3").innerHTML = "";
              document.getElementById("info4").innerHTML = "I currently TA/grade for Art of Problem Solving's ChemWOOT(world online olympiad training) to prepare hs students for ICHO & USACO.";
-             document.getElementById("info5").innerHTML = ""
+             document.getElementById("info5").innerHTML = "";
+           }
+
+           function Outreach(){
+             document.getElementById('profilepic').style.display='none';
+             document.getElementById("info").innerHTML = "Incoming UN volunteer";
+             document.getElementById("info2").innerHTML = "Took notes for disabled students at UC Berkeley for physics, computer science, organic chemistry, and BioE classes.";
+             document.getElementById("info3").innerHTML = "Society of Women Engineers(SWE): Outreach Committee";
+             document.getElementById("info4").innerHTML = "";
+             document.getElementById("info5").innerHTML = "";
+           }
+
+           function Books(){
+             document.getElementById('profilepic').style.display='none';
+             document.getElementById("info").innerHTML = "After my freshman year of college, I independently wrote and published math & physics books that are sold on Amazon US/Europe.";
+             document.getElementById("info2").innerHTML = "They can be found" + '<a href="https://www.amazon.com/Basement-Physics-Colloquial-Megan-Lim/dp/1546994653"> here.</a>';
+             document.getElementById("info3").innerHTML = "";
+             document.getElementById("info4").innerHTML = "";
+             document.getElementById("info5").innerHTML = "";
+           }
+
+           function Kalman(){
+             document.getElementById('profilepic').style.display='none';
+             document.getElementById("info").innerHTML = "I wrote a program that interprets user input of player parameters, calculates discrete time predictions based on the Kalman Filter algorithm, and generates visual images of the soccer ball's future state on a penalty kick. I was selected to present this at NASA's Intelligent System Division Showcase.";
+             document.getElementById("info2").innerHTML = '<a href="pkanimate.html"> Kalman Kick program</a>';
+             document.getElementById("info3").innerHTML = '<a href="https://medium.com/swlh/the-beauty-and-the-kalman-filter-397143589985"> Kalman Kick article</a>';
+             document.getElementById("info4").innerHTML = "";
+             document.getElementById("info5").innerHTML = "";
+           }
+
+           function Questions(){
+             document.getElementById('profilepic').style.display='none';
+             document.getElementById("info").innerHTML = "What impact do you want to have on the world and why?";
+             document.getElementById("info2").innerHTML = '';
+             document.getElementById("info3").innerHTML = "Describe your most meaningful experience(s) and why they matter to you.";
+             document.getElementById("info4").innerHTML = "";
+             document.getElementById("info5").innerHTML = "";
            }
 
 
